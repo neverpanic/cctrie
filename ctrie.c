@@ -87,7 +87,7 @@ static hash_t hash(const char key[]) {
   size_t length;
   size_t i;
   uint32_t h = 0;
-  if (key == NULL) {
+  if (!key) {
     return 0;
   }
   length = strlen(key);
@@ -178,10 +178,10 @@ lookup_result_t ctrie_lookup(PTR(ctrie_t) ctrie, const char* key, value_t* value
   }
 
   PTR(inode_t) root = DEREF(ctrie, ctrie_t).root;
-  if (root == NULL) {
+  if (!root) {
     return LOOKUP_NOTFOUND;
   }
-  if (DEREF(root, inode_t).main == NULL) {
+  if (!DEREF(root, inode_t).main) {
     return LOOKUP_NOTFOUND;
   }
 
@@ -267,10 +267,10 @@ insert_result_t ctrie_insert(PTR(ctrie_t) ctrie, const char* key, const value_t*
 
   while (retval == INSERT_CAS_FAILED) {
     PTR(inode_t) root = DEREF(ctrie, ctrie_t).root;
-    if (root == NULL || DEREF(root, inode_t).main == NULL) {
+    if (!root || !DEREF(root, inode_t).main) {
       size_t keylen = strlen(key) + 1;
       PTR(snode_t) snode = calloc(1, sizeof(snode_t) + keylen);
-      if (snode == NULL) {
+      if (!snode) {
         return INSERT_OUT_OF_MEMORY;
       }
       DEREF(snode, snode_t).type = TYPE_SNODE;
@@ -279,7 +279,7 @@ insert_result_t ctrie_insert(PTR(ctrie_t) ctrie, const char* key, const value_t*
       memcpy(DEREF(snode, snode_t).key, key, keylen);
 
       PTR(cnode_t) cnode = calloc(1, sizeof(cnode_t) + sizeof(PTR(any_node_t)) * 1);
-      if (cnode == NULL) {
+      if (!cnode) {
         free(snode);
         return INSERT_OUT_OF_MEMORY;
       }
@@ -292,7 +292,7 @@ insert_result_t ctrie_insert(PTR(ctrie_t) ctrie, const char* key, const value_t*
       DEREF(cnode, cnode_t).arr[idx.pos] = (PTR(any_node_t)) snode;
 
       PTR(inode_t) inode = calloc(1, sizeof(inode_t));
-      if (inode == NULL) {
+      if (!inode) {
         free(cnode);
         free(snode);
         return INSERT_OUT_OF_MEMORY;
@@ -328,7 +328,7 @@ static insert_result_t iinsert(
       if ((bmp & idx.flag) <= 0) {
         size_t keylen = strlen(key) + 1;
         PTR(snode_t) snode = calloc(1, sizeof(snode_t) + keylen);
-        if (snode == NULL) {
+        if (!snode) {
           return INSERT_OUT_OF_MEMORY;
         }
         DEREF(snode, snode_t).type = TYPE_SNODE;
@@ -337,7 +337,7 @@ static insert_result_t iinsert(
         memcpy(DEREF(snode, snode_t).key, key, keylen);
 
         PTR(cnode_t) newcnode = calloc(1, sizeof(cnode_t) + sizeof(PTR(any_node_t)) * (DEREF(cnode, cnode_t).len + 1));
-        if (newcnode == NULL) {
+        if (!newcnode) {
           free(snode);
           return INSERT_OUT_OF_MEMORY;
         }
@@ -376,7 +376,7 @@ static insert_result_t iinsert(
 
           size_t keylen = strlen(key) + 1;
           PTR(snode_t) newsnode = calloc(1, sizeof(snode_t) + keylen);
-          if (newsnode == NULL) {
+          if (!newsnode) {
             return INSERT_OUT_OF_MEMORY;
           }
           DEREF(newsnode, snode_t).type = TYPE_SNODE;
@@ -385,7 +385,7 @@ static insert_result_t iinsert(
           memcpy(DEREF(newsnode, snode_t).key, key, keylen);
 
           PTR(cnode_t) newcnode = calloc(1, sizeof(cnode_t) + sizeof(PTR(any_node_t)) * (DEREF(cnode, cnode_t).len));
-          if (newcnode == NULL) {
+          if (!newcnode) {
             free(newsnode);
             return INSERT_OUT_OF_MEMORY;
           }
@@ -402,7 +402,7 @@ static insert_result_t iinsert(
           } else {
             if (level < sizeof(hash_t) * 8) {
               PTR(cnode_t) childcnode = calloc(1, sizeof(cnode_t) + sizeof(PTR(any_node_t)));
-              if (childcnode == NULL) {
+              if (!childcnode) {
                 free(newsnode);
                 free(newcnode);
                 return INSERT_OUT_OF_MEMORY;
@@ -419,7 +419,7 @@ static insert_result_t iinsert(
               DEREF(childcnode, cnode_t).arr[subsnode_idx.pos] = (PTR(any_node_t)) subsnode;
 
               PTR(inode_t) newinode = calloc(1, sizeof(inode_t));
-              if (newinode == NULL) {
+              if (!newinode) {
                 free(childcnode);
                 free(newsnode);
                 free(newcnode);
@@ -433,7 +433,7 @@ static insert_result_t iinsert(
               DEREF(newcnode, cnode_t).arr[idx.pos] = (PTR(any_node_t)) newinode;
             } else {
               PTR(lnode_t) childlnode = calloc(1, sizeof(lnode_t) + sizeof(PTR(any_node_t)) * 2);
-              if (childlnode == NULL) {
+              if (!childlnode) {
                 free(newsnode);
                 free(newcnode);
                 return INSERT_OUT_OF_MEMORY;
@@ -444,7 +444,7 @@ static insert_result_t iinsert(
               DEREF(childlnode, lnode_t).arr[1] = newsnode;
 
               PTR(inode_t) newinode = calloc(1, sizeof(inode_t));
-              if (newinode == NULL) {
+              if (!newinode) {
                 free(childlnode);
                 free(newsnode);
                 free(newcnode);
@@ -475,7 +475,7 @@ static insert_result_t iinsert(
 
       size_t keylen = strlen(key) + 1;
       PTR(snode_t) newsnode = calloc(1, sizeof(snode_t) + keylen);
-      if (newsnode == NULL) {
+      if (!newsnode) {
         return INSERT_OUT_OF_MEMORY;
       }
       DEREF(newsnode, snode_t).type = TYPE_SNODE;
@@ -484,7 +484,7 @@ static insert_result_t iinsert(
       memcpy(DEREF(newsnode, snode_t).key, key, keylen);
 
       PTR(lnode_t) newlnode = calloc(1, sizeof(lnode_t) + sizeof(PTR(snode_t)) * (DEREF(lnode, lnode_t).len + 1));
-      if (newlnode == NULL) {
+      if (!newlnode) {
         free(newsnode);
         return INSERT_OUT_OF_MEMORY;
       }
