@@ -135,7 +135,7 @@ static void ctrie_print_node(PTR(any_node_t) node, uint8_t indent, const char* a
       fprintf(stderr, " .value.counter = %d", DEREF(node, snode_t).value.counter);
       fprintf(stderr, " .value.flags = %x", DEREF(node, snode_t).value.flags);
       fprintf(stderr, " .keylen = %zd", DEREF(node, snode_t).keylen);
-      fprintf(stderr, " .key = %s", DEREF(node, snode_t).key);
+      fprintf(stderr, " .key = '%s'", DEREF(node, snode_t).key);
       fprintf(stderr, "}\n");
       break;
     case TYPE_LNODE:
