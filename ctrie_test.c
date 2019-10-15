@@ -34,7 +34,7 @@ static uint32_t hash(const char key[]) {
 }
 
 void ctrie_test_insert() {
-  ctrie_t* ctrie = ctrie_new();
+  PTR(ctrie_t) ctrie = ctrie_new();
   if (!ctrie) {
     perror("ctrie_new");
     abort();
@@ -122,7 +122,7 @@ void ctrie_test_insert() {
 }
 
 void ctrie_add_filetree() {
-  ctrie_t* ctrie = ctrie_new();
+  PTR(ctrie_t) ctrie = ctrie_new();
   if (!ctrie) {
     perror("ctrie_new");
     abort();
