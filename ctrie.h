@@ -27,6 +27,9 @@
  * SPDX-License-Identifier: BSD-2-Clause
  */
 
+#ifndef __CTRIE_H__
+#define __CTRIE_H__
+
 #include <stdint.h>
 
 #if defined(USE_SHARED_MEMORY)
@@ -61,3 +64,5 @@ lookup_result_t ctrie_lookup(PTR(ctrie_t) ctrie, const char* key, value_t* value
 insert_result_t ctrie_insert(PTR(ctrie_t) ctrie, const char* key, const value_t* value);
 void ctrie_print(PTR(ctrie_t) ctrie);
 PTR(ctrie_t) ctrie_new();
+
+#endif /* defined(__CTRIE_H__) */
