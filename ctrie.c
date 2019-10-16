@@ -33,6 +33,12 @@
 
 #include "ctrie.h"
 
+#ifdef USE_SHARED_MEMORY
+#define malloc shm_malloc
+#define calloc shm_calloc
+#define free shm_free
+#endif
+
 #define W (5)
 #define _W (32)
 

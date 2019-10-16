@@ -33,8 +33,10 @@
 #include <stdint.h>
 
 #if defined(USE_SHARED_MEMORY)
+#include <shmalloc.h>
+
 #define PTR(type) size_t
-#define DEREF(ptr, output_type) (*((output_type*) (((char*) base) + ptr)))
+#define DEREF(ptr, output_type) (*((output_type*) (((char*) shm_base()) + ptr)))
 #else /* defined(USE_SHARED_MEMORY) */
 #define PTR(type) type*
 #define DEREF(ptr, output_type) (*((output_type*) ptr))
