@@ -22,3 +22,6 @@ target_link_libraries(ctrie_test PUBLIC ctrie)
 
 add_executable(ctrie_shm_test ctrie_test.c)
 target_link_libraries(ctrie_shm_test PUBLIC sharedctrie)
+
+add_executable(ctrie_multiprocess_test ctrie_multiprocess_test.c)
+target_link_libraries(ctrie_multiprocess_test PUBLIC sharedctrie)
