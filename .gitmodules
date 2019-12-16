@@ -1,3 +1,0 @@
-[submodule "shmalloc"]
-	path = shmalloc
-	url = https://github.com/MihirLuthra/shmalloc.git
